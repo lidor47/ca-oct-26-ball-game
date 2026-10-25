@@ -1,12 +1,12 @@
 'use strict'
-var gBallSize = 100
 
-function onBallClick(elBtn) {
-    gBallSize += getRandomInt(20, 61)
-    if (gBallSize > 400) gBallSize = 100
+function onBallClick(elBtn, maxDiameter) {
+    var ballSize = +elBtn.innerText
+    ballSize += getRandomInt(20, 61)
+    if (ballSize >= maxDiameter) ballSize = 100
 
-    elBtn.style.height = `${gBallSize}px`
-    elBtn.style.width = `${gBallSize}px`
-    elBtn.innerText = gBallSize
+    elBtn.style.height = `${ballSize}px`
+    elBtn.style.width = `${ballSize}px`
+    elBtn.innerText = ballSize
 
 }
