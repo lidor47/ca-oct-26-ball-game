@@ -1,5 +1,8 @@
 'use strict'
 
+var gBallsInterval
+var gBallTimeOut
+
 function onBallClick(elBtn, maxDiameter) {
     var ballSize = +elBtn.innerText
     ballSize += getRandomInt(20, 61)
@@ -76,4 +79,34 @@ function onBall6Click() {
         ball.innerText = 100
     })
     document.body.style.backgroundColor = ''
+}
+
+function onMouseEnter() {
+    var counter = 0
+    gBallTimeOut = setTimeout(() => {
+        gBallsInterval = setInterval(() => {
+            const getBall = getBallElements()
+            onBallClick(getBall.elBall1, 400)
+            onBallClick(getBall.elBall2, 300)
+            onBall3Click()
+            onBall4Click()
+            counter++
+            if (counter >= 10) {
+                clearInterval(gBallsInterval)
+                gBallsInterval = null
+            }
+        }, 2000)
+        gBallTimeOut = null
+    }, 2000)
+}
+
+function onMouseLeave() {
+    if (gBallTimeOut) {
+        clearTimeout(gBallTimeOut)
+        gBallTimeOut = null
+    }
+    if (gBallsInterval) {
+        clearInterval(gBallsInterval)
+        gBallsInterval = null
+    }
 }

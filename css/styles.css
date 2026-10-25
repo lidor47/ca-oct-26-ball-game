@@ -50,3 +50,8 @@ h1 {
 .ball6 {
     background-color: rgb(241, 176, 70);
 }
+
+.ball6:hover {
+    background-color: rgb(205, 224, 98);
+    cursor: pointer;
+}
