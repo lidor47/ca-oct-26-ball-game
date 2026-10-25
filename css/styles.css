@@ -12,7 +12,8 @@ h1 {
 
 .ball1,
 .ball2,
-.ball3 {
+.ball3,
+.ball4 {
     display: flex;
     height: 100px;
     width: 100px;
@@ -34,4 +35,9 @@ h1 {
 
 .ball3 {
     background-color: brown;
+    margin: 10px auto;
+}
+
+.ball4 {
+    background-color: rgb(64, 204, 33);
 }
