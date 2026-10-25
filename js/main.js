@@ -65,3 +65,15 @@ function reduceDiameter(elBall1, elBall2) {
 function onBall5Click() {
     document.body.style.backgroundColor = getRandomColor()
 }
+
+function onBall6Click() {
+    const getBall = getBallElements()
+    const elBalls = [getBall.elBall1, getBall.elBall2]
+    elBalls.forEach(ball => {
+        ball.style.height = ''
+        ball.style.width = ''
+        ball.style.backgroundColor = ''
+        ball.innerText = 100
+    })
+    document.body.style.backgroundColor = ''
+}
