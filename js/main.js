@@ -8,6 +8,7 @@ function onBallClick(elBtn, maxDiameter) {
     elBtn.style.height = `${ballSize}px`
     elBtn.style.width = `${ballSize}px`
     elBtn.innerText = ballSize
+    elBtn.style.backgroundColor = getRandomColor()
 
 }
 
@@ -59,4 +60,8 @@ function reduceDiameter(elBall1, elBall2) {
         elBall.style.width = `${size}px`
         elBall.innerText = size
     })
+}
+
+function onBall5Click() {
+    document.body.style.backgroundColor = getRandomColor()
 }
