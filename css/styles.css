@@ -10,8 +10,9 @@ h1 {
     color: white;
 }
 
-.ball,
-.ball2 {
+.ball1,
+.ball2,
+.ball3 {
     display: flex;
     height: 100px;
     width: 100px;
@@ -24,10 +25,13 @@ h1 {
     font-size: 22px;
     font-weight: bold;
     transition: width 1s, height 1s;
-
 }
 
 .ball2 {
     background-color: rgb(42, 172, 198);
+    margin: 10px auto;
+}
 
+.ball3 {
+    background-color: brown;
 }
