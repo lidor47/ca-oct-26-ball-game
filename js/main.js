@@ -5,6 +5,8 @@ var gBallTimeOut
 var gGameStates = []
 var gIsAutoPlaying = false
 var gCurrIdx
+var gTimerInterval = null
+var gStartTime = null
 
 function onInit() {
     gCurrIdx = 0
@@ -91,6 +93,7 @@ function onBall5Click() {
 }
 
 function onBall6Click() {
+    onMouseLeave()
     const getBall = getBallElementsAndStyle()
     const elBalls = [getBall.elBall1, getBall.elBall2]
     elBalls.forEach(ball => {
@@ -101,7 +104,12 @@ function onBall6Click() {
     })
     document.body.style.backgroundColor = ''
 
+    gGameStates = []
+    gCurrIdx = 0
+
     saveGameState()
+    resetTimer()
+
 }
 
 function onMouseEnter() {
@@ -140,20 +148,28 @@ function onMouseLeave() {
 
 
 function saveGameState() {
-
     const getBall = getBallElementsAndStyle()
+    const ball1Size = +getBall.elBall1.innerText
+    const ball2Size = +getBall.elBall2.innerText
     const gameState = {
         'backgroundColorBall1': getBall.styleBall1.backgroundColor,
         'backgroundColorBall2': getBall.styleBall2.backgroundColor,
-        'ballSizeBall1': { 'height': getBall.styleBall1.height, 'width': getBall.styleBall1.width },
-        'ballSizeBall2': { 'height': getBall.styleBall2.height, 'width': getBall.styleBall2.width },
+        'ballSizeBall1': { 'height': `${ball1Size}px`, 'width': `${ball1Size}px` },
+        'ballSizeBall2': { 'height': `${ball2Size}px`, 'width': `${ball2Size}px` },
         'ball1Content': getBall.elBall1.innerText, 'ball2Content': getBall.elBall2.innerText,
         'bodyBackgroundColor': getBall.styleBody.backgroundColor
     }
+    const prevGameState = gGameStates[gCurrIdx]
+
+    if (prevGameState && isSameGameState(prevGameState, gameState)) return
+
+    if (prevGameState) startTimer()
+
     gGameStates.splice(gCurrIdx + 1)
     gGameStates.push(gameState)
     gCurrIdx = gGameStates.length - 1
     updateUndoRedoButtons()
+    updateMovesCount()
 }
 
 function restoreGameState(idx) {
@@ -176,12 +192,14 @@ function onUndo() {
     if (gCurrIdx <= 0) return
     restoreGameState(--gCurrIdx)
     updateUndoRedoButtons()
+    updateMovesCount()
 }
 
 function onRedo() {
     if (gCurrIdx >= gGameStates.length - 1) return
     restoreGameState(++gCurrIdx)
     updateUndoRedoButtons()
+    updateMovesCount()
 }
 
 function updateUndoRedoButtons() {
@@ -190,4 +208,68 @@ function updateUndoRedoButtons() {
 
     elUndoBtn.disabled = gCurrIdx <= 0
     elRedoBtn.disabled = gCurrIdx >= gGameStates.length - 1
+}
+
+function updateMovesCount() {
+    const elCounter = document.querySelector('.counter')
+    elCounter.innerText = gCurrIdx
+}
+
+function startTimer() {
+    if (gTimerInterval !== null) return
+
+    const elTimer = document.querySelector('.game-timer')
+    if (!elTimer) return
+
+    gStartTime = Date.now()
+    updateTimer()
+
+    gTimerInterval = setInterval(updateTimer, 1000)
+}
+
+function updateTimer() {
+    if (gStartTime === null) return
+
+    const elTimer = document.querySelector('.game-timer')
+    if (!elTimer) return
+
+    const elapsedTime = Date.now() - gStartTime
+    const totalSeconds = Math.floor(elapsedTime / 1000)
+
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+
+    const displayMinutes = minutes < 10 ? '0' + minutes : minutes
+    const displaySeconds = seconds < 10 ? '0' + seconds : seconds
+
+    elTimer.innerText = `${displayMinutes}:${displaySeconds}`
+}
+
+function stopTimer() {
+    if (gTimerInterval === null) return
+
+    clearInterval(gTimerInterval)
+    gTimerInterval = null
+}
+
+function resetTimer() {
+    stopTimer()
+    gStartTime = null
+
+    const elTimer = document.querySelector('.game-timer')
+    if (elTimer) elTimer.innerText = '00:00'
+}
+
+function isSameGameState(state1, state2) {
+    return (
+        state1.backgroundColorBall1 === state2.backgroundColorBall1 &&
+        state1.backgroundColorBall2 === state2.backgroundColorBall2 &&
+        state1.ballSizeBall1.height === state2.ballSizeBall1.height &&
+        state1.ballSizeBall1.width === state2.ballSizeBall1.width &&
+        state1.ballSizeBall2.height === state2.ballSizeBall2.height &&
+        state1.ballSizeBall2.width === state2.ballSizeBall2.width &&
+        state1.ball1Content === state2.ball1Content &&
+        state1.ball2Content === state2.ball2Content &&
+        state1.bodyBackgroundColor === state2.bodyBackgroundColor
+    )
 }
