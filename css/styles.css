@@ -11,6 +11,11 @@ h1 {
     color: white;
 }
 
+.balls {
+    display: flex;
+    flex-direction: row;
+}
+
 .ball1,
 .ball2,
 .ball3,
@@ -55,4 +60,20 @@ h1 {
 .ball6:hover {
     background-color: rgb(205, 224, 98);
     cursor: pointer;
+}
+
+.undo-btn {
+    color: aqua;
+    background-color: blueviolet;
+    border-radius: 35%;
+    border: 2px solid rgba(36, 9, 236, 0.895);
+    border-top: 4px solid rgb(204, 33, 234);
+}
+
+.redo-btn {
+    color: blue;
+    background-color: yellowgreen;
+    border-radius: 35%;
+    border: 2px solid rgb(198, 240, 11);
+    border-top: 4px solid rgb(227, 233, 113);
 }
